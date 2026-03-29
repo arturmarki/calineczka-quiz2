@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz: Calineczka 🌸</title>
+
+<style>
+body {
+    font-family: 'Comic Sans MS', cursive;
+    background: linear-gradient(to bottom, #ffd6f6, #fff);
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+}
+
+h1 {
+    color: #ff4da6;
+    font-size: 24px;
+}
+
+.quiz-box {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin: auto;
+    max-width: 500px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+button {
+    width: 100%;
+    margin: 8px 0;
+    padding: 14px;
+    border-radius: 15px;
+    border: none;
+    font-size: 16px;
+    background: #ff80bf;
+    color: white;
+}
+
+.correct { background: #66cc66 !important; }
+.wrong { background: #ff6666 !important; }
+
+.score {
+    font-size: 18px;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🌸 Calineczka - Quiz 🌸</h1>
+
+<div class="quiz-box">
+    <div id="question">Kliknij START!</div>
+    <div id="answers"></div>
+    <button onclick="startQuiz()">START</button>
+    <div class="score" id="score"></div>
+</div>
+
+<script>
+const questions = [
+{question:"Kto napisał Calineczkę?",answers:["Andersen","Grimm","Tuwim"],correct:0},
+{question:"Z czego narodziła się Calineczka?",answers:["Kwiat","Jajko","Liść"],correct:0},
+{question:"Kto ją porwał?",answers:["Żaba","Mysz","Kot"],correct:0},
+{question:"Gdzie mieszkała zimą?",answers:["U myszy","W lesie","Na drzewie"],correct:0},
+{question:"Kogo uratowała?",answers:["Jaskółkę","Psa","Kota"],correct:0},
+{question:"Za kogo miała wyjść?",answers:["Kreta","Żabę","Mysza"],correct:0},
+{question:"Kto jej pomógł uciec?",answers:["Jaskółka","Motyl","Kret"],correct:0},
+{question:"Gdzie poleciała?",answers:["Kraina kwiatów","Miasto","Las"],correct:0},
+{question:"Kogo spotkała?",answers:["Króla elfów","Smoka","Króla ludzi"],correct:0}
+];
+
+let current = 0;
+let score = 0;
+let game = [];
+
+function startQuiz() {
+    game = questions.sort(() => 0.5 - Math.random()).slice(0,6);
+    current = 0;
+    score = 0;
+    next();
+}
+
+function next() {
+    if(current >= game.length) return end();
+
+    const q = game[current];
+    question.innerText = q.question;
+    answers.innerHTML = "";
+
+    q.answers.forEach((a,i)=>{
+        let btn = document.createElement("button");
+        btn.innerText = a;
+        btn.onclick = ()=>check(i,btn);
+        answers.appendChild(btn);
+    });
+}
+
+function check(i,btn){
+    if(i === game[current].correct){
+        btn.classList.add("correct");
+        score++;
+    } else {
+        btn.classList.add("wrong");
+    }
+
+    setTimeout(()=>{
+        current++;
+        next();
+    },700);
+}
+
+function end(){
+    question.innerText = "🎉 Koniec!";
+    answers.innerHTML = "";
+
+    let msg = score >=5 ? "🌟 Super!" : "🌼 Spróbuj jeszcze raz!";
+    scoreDiv.innerText = "Wynik: "+score+"/6\n"+msg;
+}
+
+const question = document.getElementById("question");
+const answers = document.getElementById("answers");
+const scoreDiv = document.getElementById("score");
+</script>
+
+</body>
+</html>
